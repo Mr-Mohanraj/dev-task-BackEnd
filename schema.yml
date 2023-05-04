@@ -1,0 +1,300 @@
+openapi: 3.0.3
+info:
+  title: Authentication Api
+  version: 0.1.0
+  description: Api with authentication functionality
+paths:
+  /api/user/forget/:
+    post:
+      operationId: api_user_forget_create
+      description: |-
+        Info:
+            * Forgot view for sign-in user to forget password method or change the old without know the old password
+
+        Required Field :
+            * email: String (must be signup email)
+
+        Response : Json
+            {
+            msg: String
+            }
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Forgot'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Forgot'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Forgot'
+        required: true
+      security:
+      - CustomJWTAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forgot'
+          description: ''
+  /api/user/logout/:
+    post:
+      operationId: api_user_logout_create
+      description: |-
+        Info:
+            * SignOut view for SignOut the exiting a account.
+
+        Required Field:
+            * token : String (Token)
+
+        response : Json
+            {
+            msg: String
+            }
+      tags:
+      - api
+      security:
+      - CustomJWTAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/user/refresh/:
+    post:
+      operationId: api_user_refresh_create
+      description: |-
+        Info:
+            * Refresh Token view for sign-in user to refresh the old token to new one. just use the api path user/refresh/.
+            * But user must be authorized otherwise the endpoints not working.
+
+        Required Field :
+            * token: String (Token)
+
+        Response : Json
+            {
+            token : String (Token)
+            }
+      tags:
+      - api
+      security:
+      - CustomJWTAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/user/reset/{token}/:
+    post:
+      operationId: api_user_reset_create
+      description: |-
+        Info:
+            * Reset view for sign-in user to change the user old password to new password.
+            * Here the Temporary Token for only reset the password. After change the password the token is automatically delete.
+
+        Required Field :
+            password: String
+            password_confirm: String
+
+        Response : Json
+            {
+                msg: String
+            }
+      parameters:
+      - in: path
+        name: token
+        schema:
+          type: string
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Reset'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Reset'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Reset'
+        required: true
+      security:
+      - CustomJWTAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reset'
+          description: ''
+  /api/user/signin/:
+    post:
+      operationId: api_user_signin_create
+      description: |-
+        Info:
+            * Login view for signup user to sign-in into the account.
+
+        Required Field:
+            * email : String
+            * password : String
+
+        Response : Json
+            {
+            token : String (Token)
+            }
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Login'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Login'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Login'
+          description: ''
+  /api/user/signup/:
+    post:
+      operationId: api_user_signup_create
+      description: |-
+        Info:
+            * Signup view for create a new account.
+
+        Required Field:
+            * username : String
+            * email : String
+            * password : String
+            * password_confirm : string (same as a password)
+
+        Response: Json
+            {
+            id: Integer,
+            email: String,
+            username: String
+            }
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+  /api/user/user/:
+    get:
+      operationId: api_user_user_retrieve
+      description: |-
+        Info:
+            * User view for sign-in user to see an our own user information's.
+
+        Required Field :
+            * token : String (Token)
+
+        Response : Json
+            {
+            id: integer
+            username: String
+            }
+      tags:
+      - api
+      security:
+      - CustomJWTAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+components:
+  schemas:
+    Forgot:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        email:
+          type: string
+          maxLength: 255
+      required:
+      - email
+      - id
+    Login:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        email:
+          type: string
+          maxLength: 255
+        password:
+          type: string
+          maxLength: 255
+      required:
+      - email
+      - id
+      - password
+    Reset:
+      type: object
+      properties:
+        password:
+          type: string
+          maxLength: 255
+        password_confirm:
+          type: string
+      required:
+      - password
+      - password_confirm
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          nullable: true
+          maxLength: 500
+        email:
+          type: string
+          maxLength: 255
+        password:
+          type: string
+          writeOnly: true
+          maxLength: 255
+      required:
+      - email
+      - id
+      - password
+  securitySchemes:
+    CustomJWTAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
