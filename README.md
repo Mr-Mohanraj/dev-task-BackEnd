@@ -17,7 +17,13 @@
 
 * **pip install -r requirements.txt**
 
-* python (for Windows) or python3 (not for Windows): manage.py runserver
+* **python (for Windows) or python3 (not for Windows)** I am currently using windows.
+
+* python manage.py makemigrations  (create migrations file to execute into database)
+
+* python manage.py migrate (all change into database based on the migration file)
+
+* python manage.py runserver
 
 * Check the API using the blow end point
 
@@ -63,3 +69,5 @@
 
 * [drf_spectacular](https://www.bing.com/ck/a?!&&p=a60dcbdabe1258aaJmltdHM9MTY3OTE4NDAwMCZpZ3VpZD0xMmM2MGIyOC0yMmNkLTY4ZWEtMTgwOC0xOWZiMjM3ZjY5NTcmaW5zaWQ9NTE5Mg&ptn=3&hsh=3&fclid=12c60b28-22cd-68ea-1808-19fb237f6957&psq=drf+spectacular&u=a1aHR0cHM6Ly9kcmYtc3BlY3RhY3VsYXIucmVhZHRoZWRvY3MuaW8vZW4vbGF0ZXN0L3JlYWRtZS5odG1s&ntb=1)
   For API auto document and swagger(open API). This feature is not available(In processing).
+  
+  `                                                                 Thank you                                                         `
